@@ -73,6 +73,21 @@ def apply_mask(image, mask, color, alpha=0.5):
     return image
 
 
+def get_masked_image(image, boxes, masks):
+
+    N = boxes.shape[0]
+    colors = random_colors(N)
+
+    masked_image = image.astype(np.uint32).copy()
+    for i in range(N):
+        color = colors[i]
+
+        mask = masks[:, :, i]
+        masked_image = apply_mask(masked_image, mask, color)
+
+    return masked_image.astype(np.uint8)
+
+
 def display_instances(image, boxes, masks, class_ids, class_names,
                       scores=None, title="",
                       figsize=(16, 16), ax=None):
